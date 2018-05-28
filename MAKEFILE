@@ -1,0 +1,29 @@
+COPT=-mf -oneatx -zp4 -3r -wx
+LOPT=-mf -oneatx -zp4 -3r -wx
+
+EXE=mixtest.exe
+OBJ=mixtest.obj
+LIB=smix.lib
+
+# Do a complete rebuild if the makefile has changed
+MAK=makefile
+
+$(EXE) : $(LIB) $(OBJ) $(MAK)
+  wcl386 $(LIB) $(OBJ) /fe=$(EXE) $(LOPT)
+
+smix.lib : smix.obj detect.obj lowmem.obj
+  wlib smix.lib -+smix.obj -+detect.obj -+lowmem.obj
+
+detect.obj : detect.c $(MAK)
+  wcc386 detect.c $(COPT)
+
+lowmem.obj : lowmem.c $(MAK)
+  wcc386 lowmem.c $(COPT)
+
+# smix.c MUST be compiled with the -zu compiler switch
+smix.obj : smix.c lowmem.h $(MAK)
+  wcc386 smix.c $(COPT) -zu
+
+mixtest.obj : mixtest.c smix.h detect.h $(MAK)
+  wcc386 mixtest.c $(COPT)
+
