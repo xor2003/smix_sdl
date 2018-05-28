@@ -2,7 +2,7 @@
 
 /* л smix.c v1.30 ллллллллллллллллллллллллллллллллллллллллллллллллллллллллл */
 
-#include "SMIX.H"
+#include "smix.h"
 
 //#include <conio.h>
 //#include <dos.h>
@@ -308,11 +308,11 @@ void close_sound_resource_file(void)
 static FILE *sound_file;
 static long sound_size;
 
-typedef struct
+typedef struct  __attribute__((__packed__)) 
 {
     char key[8];
-    long start;
-    long size;
+    int32_t start;
+    int32_t size;
 } RESOURCE_HEADER;
 
 void get_sound_file(const char *key)
@@ -333,7 +333,7 @@ void get_sound_file(const char *key)
         for (i = 0; i < numsounds; i++)
         {
             fread(&res_header, sizeof(res_header), 1, sound_file);
-            if (!strnicmp(key, res_header.key, 8))
+            if (!strncasecmp(key, res_header.key, 8))
             {
                 found = TRUE;
                 break;

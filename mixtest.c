@@ -19,7 +19,7 @@
 
 #define NUMSOUNDS 6
 
-#define random(num) (int)(((long)rand()*(num))/(RAND_MAX+1))
+#define random(num) (int)(((long)rand()*(num))/(RAND_MAX))
 #define randomize() srand((unsigned)time(NULL))
 
 const char *resource_file = "mixtest.snd";
